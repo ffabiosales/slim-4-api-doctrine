@@ -1,0 +1,8 @@
+{
+    "name": "simplesvet/api",
+    "description": "api básica para app da simplesvet",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.4"
+    }
+}
