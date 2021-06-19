@@ -51,6 +51,13 @@ class PatologiaController
 
     public function mostrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
+        $id = $request->getAttribute('id');
+
+        $instancia = $this->container->get('em')->getRepository('App\Entidades\Patologia');
+
+        $patologia = $instancia->find($id);
+
+        $response->getBody()->write(json_encode($patologia));
 
         return $response;
     }
