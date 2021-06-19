@@ -30,20 +30,18 @@ class PatologiaController
         return $response;
     }
 
-    public function cadastrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function cadastrar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
 
-        $dados = (array) $request->getParsedBody();
-
+        $dados = (array)$request->getParsedBody();
+        
         $patologia = new Patologia();
         $patologia->setNome($dados['nome']);
         $patologia->setDescricao($dados['descricao']);
-        $patologia->setSituacao($dados['situacao']);
+        $patologia->setSituacao($dados['situacao'] ? $dados['situacao'] : 0);
 
         $instancia = $this->container->get('em');
-
         $instancia->persist($patologia);
-
         $instancia->flush();
 
         $response->getBody()->write(json_encode($dados));
