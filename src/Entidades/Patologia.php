@@ -2,56 +2,104 @@
 
 namespace App\Entidades;
 
-class Patologia
+/** @Entity */
+class Patologia implements \JsonSerializable
 {
+    /**
+     * @Id @Column(type="integer")
+     * @GeneratedValue
+     */
     private int $id;
 
+    /**
+     * @var string
+     * @Column(type="string")
+     */
     private string $nome;
 
+    /**
+     * @var string
+     * @Column(type="string")
+     */
     private ?string $descricao;
 
+    /**
+     * @Column(type="integer")
+     */
     private int $situacao;
 
-    public function getId(): int
+    public function jsonSerialize(): array
     {
-        return $this->id;
+        return [
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'descricao' => $this->descricao,
+            'situacao' => $this->situacao,
+        ];
     }
 
-    public function getName(): string
+    /**
+     * @return string
+     */
+    public function getNome(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @return self
+     */
+    public function setNome(String $nome): self
     {
-        $this->name = $name;
+        $this->nome = $nome;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    /**
+     * @return string
+     */
+    public function getDescricao(): string
     {
-        return $this->description;
+        return $this->descricao;
     }
 
-    public function setDescription(?string $description): self
+    
+    /**
+     * @return self
+     */
+    public function setDescricao(String $descricao): self
     {
-        $this->description = $description;
+        $this->descricao = $descricao;
 
         return $this;
     }
 
-    public function getSituacao(): string
+    /**
+     * @return string
+     */
+    public function getSituacao(): int
     {
         return $this->situacao;
     }
 
-    public function setSituacao(string $situacao): self
+    /**
+     * @return self
+     */
+    public function setSituacao(int $situacao): self
     {
         $this->situacao = $situacao;
 
         return $this;
     }
 
-    // TODO criar método que serialize 
+    public function toArray()
+    {
+        return [ 
+            'id' => $this->id, 
+            'nome' => $this->nome,
+            'descricao' => $this->descricao,
+            'situacao' => $this->situacao
+        ];
+    }
 }
