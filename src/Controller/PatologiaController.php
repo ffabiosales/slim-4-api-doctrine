@@ -27,8 +27,7 @@ class PatologiaController
 
         $response->getBody()->write(json_encode($patologias));
 
-        return $response
-            ->withHeader('Content-Type', 'application/json');
+        return $response;
     }
 
     public function cadastrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
@@ -49,8 +48,7 @@ class PatologiaController
 
         $response->getBody()->write(json_encode($dados));
 
-        return $response
-            ->withHeader('Content-Type', 'application/json');
+        return $response;
     }
 
     public function mostrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
