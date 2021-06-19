@@ -34,7 +34,7 @@ class PatologiaController
     {
 
         $dados = (array)$request->getParsedBody();
-        
+
         $patologia = new Patologia();
         $patologia->setNome($dados['nome']);
         $patologia->setDescricao($dados['descricao']);
@@ -46,7 +46,8 @@ class PatologiaController
 
         $response->getBody()->write(json_encode($dados));
 
-        return $response;
+        return $response
+            ->withHeader('Content-Type', 'application/json');
     }
 
     public function mostrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
@@ -59,7 +60,8 @@ class PatologiaController
 
         $response->getBody()->write(json_encode($patologia));
 
-        return $response;
+        return $response
+            ->withHeader('Content-Type', 'application/json');
     }
 
     public function atualizar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
