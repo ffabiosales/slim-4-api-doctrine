@@ -44,5 +44,9 @@ $container->set('em', $entityManager);
 
 $app = AppFactory::createFromContainer($container);
 
+// https://www.slimframework.com/docs/v4/middleware/body-parsing.html
+// Parse json, form data and xml
+$app->addBodyParsingMiddleware();
+
 // require __DIR__ . '/Dependencias.php';
 require __DIR__ . '/Rotas.php';
