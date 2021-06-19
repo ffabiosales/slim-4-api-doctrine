@@ -5,6 +5,7 @@ namespace App\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use App\Entidades\Patologia;
 
 class PatologiaController
 {
@@ -20,10 +21,10 @@ class PatologiaController
 
     public function listar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
+        $instancia = $this->container->get('em')->getRepository('App\Entidades\Patologia');
 
-        $patologias = [
-            ['nome' => "doença ruim"]
-        ];
+        $patologias = $instancia->findAll();
+
         $response->getBody()->write(json_encode($patologias));
 
         return $response
@@ -33,7 +34,23 @@ class PatologiaController
     public function cadastrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
 
-        return $response;
+        $dados = (array) $request->getParsedBody();
+
+        $patologia = new Patologia();
+        $patologia->setNome($dados['nome']);
+        $patologia->setDescricao($dados['descricao']);
+        $patologia->setSituacao($dados['situacao']);
+
+        $instancia = $this->container->get('em');
+
+        $instancia->persist($patologia);
+
+        $instancia->flush();
+
+        $response->getBody()->write(json_encode($dados));
+
+        return $response
+            ->withHeader('Content-Type', 'application/json');
     }
 
     public function mostrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
