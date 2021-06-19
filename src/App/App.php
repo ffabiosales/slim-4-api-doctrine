@@ -4,6 +4,9 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use App\Controller\PatologiaController;
 use Psr\Container\ContainerInterface;
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\{EntityManager, EntityManagerInterface};
+
 
 $baseDir = __DIR__ . '/../../';
 
@@ -25,6 +28,10 @@ $containerBuilder->addDefinitions($configuracoes);
 
 $container = $containerBuilder->build();
 
+// Bando de dados com Doctrine pra fazer ORM
+require __DIR__.'/Configuracoes/Doctrine.php';
+$entityManager = getEntityManager($container);
+$container->set('em', $entityManager);
 
 $app = AppFactory::createFromContainer($container);
 // require __DIR__ . '/Dependencias.php';
