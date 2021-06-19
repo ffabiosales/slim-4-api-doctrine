@@ -11,7 +11,7 @@ function getEntityManager(ContainerInterface $container): EntityManagerInterface
     $config = Setup::createAnnotationMetadataConfiguration(
         $doctrineSettings['metadata_dirs'],
         $doctrineSettings['dev_mode']
-    );
+    ); 
 
     return EntityManager::create($doctrineSettings['connection'], $config);
 };

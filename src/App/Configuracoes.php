@@ -18,16 +18,16 @@ return [
             'cache_dir' => APP_ROOT . '/var/doctrine',
 
             // you should add any other path containing annotated entity classes
-            'metadata_dirs' => [APP_ROOT . '/src/Entidades'],
+            'metadata_dirs' => [APP_ROOT . '/../Entidades'],
 
             'connection' => [
                 'driver' => 'pdo_mysql',
-                'host' => 'localhost',
-                'port' => 3306,
-                'dbname' => 'simplesvet',
-                'user' => 'root',
-                'password' => '12345678',
-                'charset' => 'utf-8'
+                'host' => $_ENV['DB_HOST'],
+                'port' => $_ENV['DB_PORT'],
+                'dbname' => $_ENV['DB_DATABASE'],
+                'user' => $_ENV['DB_USERNAME'],
+                'password' => $_ENV['DB_PASSWORD'],
+                'charset' => 'utf8mb4'
             ]
         ]
     ]
