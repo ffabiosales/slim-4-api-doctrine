@@ -12,16 +12,17 @@ class PatologiaController
     // https://www.slimframework.com/docs/v3/objects/router.html#container-resolution
 
     private $container;
-
+    private $db;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->db = $this->container->get('em');
     }
 
-    public function listar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function listar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $instancia = $this->container->get('em')->getRepository('App\Entidades\Patologia');
+        $instancia = $this->db->getRepository('App\Entidades\Patologia');
 
         $patologias = $instancia->findAll();
 
@@ -40,9 +41,8 @@ class PatologiaController
         $patologia->setDescricao($dados['descricao']);
         $patologia->setSituacao($dados['situacao'] ? $dados['situacao'] : 0);
 
-        $instancia = $this->container->get('em');
-        $instancia->persist($patologia);
-        $instancia->flush();
+        $this->db->persist($patologia);
+        $this->db->flush();
 
         $response->getBody()->write(json_encode($dados));
 
@@ -50,13 +50,15 @@ class PatologiaController
             ->withHeader('Content-Type', 'application/json');
     }
 
-    public function mostrar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function mostrar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $id = $request->getAttribute('id');
 
-        $instancia = $this->container->get('em')->getRepository('App\Entidades\Patologia');
+        $instancia = $this->db->getRepository('App\Entidades\Patologia');
 
         $patologia = $instancia->find($id);
+
+        $this->db->flush();
 
         $response->getBody()->write(json_encode($patologia));
 
@@ -64,15 +66,33 @@ class PatologiaController
             ->withHeader('Content-Type', 'application/json');
     }
 
-    public function atualizar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function atualizar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $id = $request->getAttribute('id');
 
-        return $response;
+        // Dados usados para atualizar a patologia
+        $dados = $request->getParsedBody();
+
+        $instancia = $this->db->getRepository('App\Entidades\Patologia');
+
+        $patologia = $instancia->find($id);
+
+        $patologia->setNome($dados['nome']);
+        $patologia->setDescricao($dados['descricao']);
+        $patologia->setSituacao($dados['situacao']);
+
+        $this->db->flush();
+
+        $response->getBody()->write(json_encode($patologia));
+
+        return $response
+            ->withHeader('Content-Type', 'application/json');
     }
 
-    public function apagar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function apagar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-
+        $id = $request->getAttribute('id');
+        $response->getBody()->write("apaga " . $id);
         return $response;
     }
 }
