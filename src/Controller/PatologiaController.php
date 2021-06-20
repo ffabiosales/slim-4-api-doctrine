@@ -92,7 +92,20 @@ class PatologiaController
     public function apagar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $id = $request->getAttribute('id');
-        $response->getBody()->write("apaga " . $id);
-        return $response;
+
+        $instancia = $this->db->getRepository('App\Entidades\Patologia');
+
+        $patologia = $instancia->find($id);
+
+        // Caso a $patologia não exista/já tenha sido excluida;
+        if (!$patologia)
+            return $response->withStatus(404);
+
+        $this->db->remove($patologia);
+
+        $this->db->flush();
+        
+        return $response
+                    ->withStatus(200);
     }
 }
