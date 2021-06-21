@@ -21,14 +21,15 @@ class PatologiaController
     }
 
     public function listar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
-    {
-        $instancia = $this->db->getRepository('App\Entidades\Patologia');
+    {   
 
+        $instancia = $this->db->getRepository('App\Entidades\Patologia');
         $patologias = $instancia->findAll();
 
         $response->getBody()->write(json_encode($patologias));
 
-        return $response;
+        return $response
+            ->withHeader('Content-Type', 'application/json');;
     }
 
     public function cadastrar(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -104,8 +105,8 @@ class PatologiaController
         $this->db->remove($patologia);
 
         $this->db->flush();
-        
+
         return $response
-                    ->withStatus(200);
+            ->withStatus(200);
     }
 }

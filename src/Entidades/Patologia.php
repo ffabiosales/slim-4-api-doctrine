@@ -1,8 +1,12 @@
 <?php
 
+use Doctrine\ORM\Mapping as ORM;
 namespace App\Entidades;
 
-/** @Entity */
+/** @Entity 
+ * @ORM\OrderBy({"nome" = "ASC"})
+ * 
+*/
 class Patologia implements \JsonSerializable
 {
     /**
@@ -19,7 +23,7 @@ class Patologia implements \JsonSerializable
 
     /**
      * @var string
-     * @Column(type="string")
+     * @Column(type="text")
      */
     private ?string $descricao;
 

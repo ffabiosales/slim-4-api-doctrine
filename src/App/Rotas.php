@@ -26,10 +26,12 @@ $app->group('/api/v1', function (RouteCollectorProxy $group) {
     // Invocando de Controllers\PreflightController
     $group->options('/patologias', PreflightController::class);
     $group->get('/patologias/{id}', PatologiaController::class . ':mostrar');
-    $group->patch('/patologias/{id}', PatologiaController::class . ':atualizar');
+    
+    //TODO Corrigir bug quando usamos o PATCH
+    $group->post('/patologias/{id}', PatologiaController::class . ':atualizar');
     $group->options('/patologias/{id}', PreflightController::class);
     $group->delete('/patologias/{id}', PatologiaController::class . ':apagar');
 
-    $group->get('/patologias/exportar', ExportarController::class . ':exportar');
+    // $group->get('/patologias/exportar', ExportarController::class . ':exportar');
 
 });
